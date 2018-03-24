@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	budgetsProto "github.com/homespendapi/service/budgets/proto"
+	accountsProto "github.com/homespendapi/service/accounts/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
@@ -16,12 +16,12 @@ const (
 )
 
 func main() {
-	createBudgetReq := &budgetsProto.CreateBudgetRequest{}
-	createBudget(address, prot, createBudgetReq)
+	creatAccountReq := &accountsProto.CreateAccountRequest{}
+	creatAccount(address, prot, creatAccountReq)
 
 }
 
-func createBudget(address string, prot string, req *budgetsProto.CreateBudgetRequest) {
+func creatAccount(address string, prot string, req *accountsProto.CreateAccountRequest) {
 	uri := address + prot
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -33,10 +33,10 @@ func createBudget(address string, prot string, req *budgetsProto.CreateBudgetReq
 	}
 	defer conn.Close()
 
-	c := budgetsProto.NewBudgetsClient(conn)
-	r, err := c.CreateBudget(ctx, req)
+	c := accountsProto.NewAccountsClient(conn)
+	r, err := c.CreateAccount(ctx, req)
 	if err != nil {
-		log.Fatalf("could not CreateBudget: %v", err)
+		log.Fatalf("could not CreatAccount: %v", err)
 	}
 	msg, _ := json.Marshal(r.RespMsg)
 	log.Printf(string(msg))

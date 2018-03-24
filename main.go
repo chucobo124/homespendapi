@@ -1,4 +1,5 @@
 //go:generate protoc -I ${GOPATH}/src --go_out=plugins=grpc:${GOPATH}/src ${GOPATH}/src/github.com/homespendapi/service/budgets/proto/budget.proto
+//go:generate protoc -I ${GOPATH}/src --go_out=plugins=grpc:${GOPATH}/src ${GOPATH}/src/github.com/homespendapi/service/accounts/proto/account.proto
 //go:generate protoc -I ${GOPATH}/src --go_out=plugins=grpc:${GOPATH}/src ${GOPATH}/src/github.com/homespendapi/service/utils/proto/utils.proto
 
 package main
@@ -11,6 +12,7 @@ import (
 	"time"
 
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/homespendapi/service/accounts"
 	"github.com/homespendapi/service/budgets"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -35,6 +37,7 @@ func main() {
 
 	// Regest Service
 	budgets.NewService(s)
+	accounts.NewService(s)
 	// End Regest Service
 
 	generateServiceInfo(s)
@@ -45,12 +48,12 @@ func main() {
 }
 
 func generateServiceInfo(s *grpc.Server) {
+	fmt.Printf("GRPC Port %s \n", port)
+	fmt.Println("---------------------------------------------------------------------------")
+
 	for service, info := range s.GetServiceInfo() {
-		fmt.Printf("GRPC Port %s \n", port)
-		fmt.Println("---------------------------------------------------------------------------")
 		fmt.Print("Service: ")
 		fmt.Print(service + "\n")
-		fmt.Println("---------------------------------------------------------------------------")
 		for _, method := range info.Methods {
 			fmt.Println("Grpc Methods:")
 			fmt.Println("---------------------------------------------------------------------------")
@@ -64,6 +67,6 @@ func LogIntercepter(ctx context.Context, req interface{}, info *grpc.UnaryServer
 	inTime, _ := ctx.Deadline()
 	resp, err = handler(ctx, req)
 	duration := time.Now().Nanosecond() - inTime.Nanosecond()
-	log.Printf("GRPC ---- %s | tooks %d ns", info.FullMethod, duration)
+	log.Printf("RPC ---- %s | tooks %d ns", info.FullMethod, duration)
 	return
 }

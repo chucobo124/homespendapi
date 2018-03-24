@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package account;
+
+import "google/protobuf/timestamp.proto";
+import "github.com/homespendapi/service/utils/proto/utils.proto";
+
+service Accounts {
+  // Create a Account
+  rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse) {}
+}
+
+message CreateAccountRequest {
+  Account account = 1;
+}
+
+message CreateAccountResponse {
+  utils.RespMsg resp_msg = 1;
+}
+
+message Account {
+  int64 id = 1;
+  string column_name = 2;
+  float amount = 3;
+  AccountStat stat = 4;
+  string remark = 5;
+  string authorise_by = 6;
+  string prepare_by = 7; 
+  google.protobuf.Timestamp create_at = 8;
+  google.protobuf.Timestamp update_at = 9;
+}
+
+enum AccountStat {
+  error = 0;
+  pending = 1;
+  transfered = 2;
+  removed = 99;
+}
