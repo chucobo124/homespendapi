@@ -26,6 +26,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	// Setup Middleware
 	s := grpc.NewServer(
 		grpc.UnaryInterceptor(
 			grpcMiddleware.ChainUnaryServer(LogIntercepter),
@@ -45,6 +46,7 @@ func main() {
 
 func generateServiceInfo(s *grpc.Server) {
 	for service, info := range s.GetServiceInfo() {
+		fmt.Printf("GRPC Port %s \n", port)
 		fmt.Println("---------------------------------------------------------------------------")
 		fmt.Print("Service: ")
 		fmt.Print(service + "\n")
