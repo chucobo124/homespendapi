@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package budget;
+
+import "google/protobuf/timestamp.proto";
+import "github.com/homespendapi/service/utils/proto/utils.proto";
+
+service Budgets {
+  // Create a Budget
+  rpc CreateBudget (CreateBudgetRequest) returns (CreateBudgetResponse) {}
+}
+
+message CreateBudgetRequest {
+  Budget budget = 1;
+}
+
+message CreateBudgetResponse {
+  utils.RespMsg resp_msg = 1;
+}
+
+message Budget {
+  int64 id = 1;
+  string budget_name = 2;
+  string budget_icon = 3;
+  string authorise_by = 4;
+  BudgetStat stat = 5;
+  string decs = 6;
+  google.protobuf.Timestamp create_at = 7;
+  google.protobuf.Timestamp update_at = 8;
+}
+
+enum BudgetStat {
+  error = 0;
+  avaliable = 1;
+  broke = 2;
+}

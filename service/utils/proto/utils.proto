@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package utils;
+
+message RespMsg {
+  string msg = 1;
+  MsgStat stat = 2;
+}
+
+enum MsgStat {
+  error = 0;
+  success = 1;
+}
