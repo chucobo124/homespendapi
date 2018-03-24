@@ -42,7 +42,3 @@ func createBudget(address string, prot string, req *budgetsProto.CreateBudgetReq
 	log.Printf(string(msg))
 
 }
-
-func fetchRpc(uri string, runClient func(*grpc.ClientConn)) {
-
-}

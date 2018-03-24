@@ -42,7 +42,3 @@ func creatAccount(address string, prot string, req *accountsProto.CreateAccountR
 	log.Printf(string(msg))
 
 }
-
-func fetchRpc(uri string, runClient func(*grpc.ClientConn)) {
-
-}
